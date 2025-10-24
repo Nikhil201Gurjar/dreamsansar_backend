@@ -22,12 +22,12 @@ function TestimonialController() {
                 if((!user_name || !user_concern)) return res.status(401).json({success:false,msg:'All fields are required'});
 
                 const testimonial = await TestimonialModel.create({
-                    user_concern,user_name,rating:rating?rating:5
+                    user_name,user_concern,rating:rating?rating:5
                 })
 
                 return res.status(201).json({success:true,msg:'Successfully added a testimonial',testimonial});
             } 
-            catch (error) {return res.status(500).json({succeess:false,msg:error.message}) }
+            catch (error) {return res.status(500).json({success:false,msg:error.message}) }
         },
 
         //-----------Delete a Testimonial
@@ -37,9 +37,9 @@ function TestimonialController() {
               if(!testimonial_id) return res.status(404).json({success:false,msg:'Testimonail id is not found'});
               
               await TestimonialModel.deleteOne({_id:testimonial_id});
-              return res.status(201).json({succeess:true,msg:'Successfully remove the testimonail'});
+              return res.status(201).json({success:true,msg:'Successfully remove the testimonail'});
             } 
-            catch (error) {return res.status(500).json({succeess:false,msg:error.message}) }
+            catch (error) {return res.status(500).json({success:false,msg:error.message}) }
         }
     }
 }

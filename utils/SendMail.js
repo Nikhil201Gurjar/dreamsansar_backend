@@ -10,15 +10,26 @@ const SendMail = async (to, subject, text) => {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: process.env.SMTP_PORT,
+      secure:true,
       auth: {
         user: process.env.SMTP_AUTH_USER,
         pass: process.env.SMTP_AUTH_PASS
       }
     });
 
-    transporter.sendMail({to,subject,text});
+     const info = await transporter.sendMail({
+      from: process.env.SMTP_AUTH_USER,
+      to,
+      subject,
+      text,
+    });
 
-  } catch (error) { throw new Error(error); }
+    console.log("✅ Mail sent successfully:", info.messageId);
+
+  } catch (error) {
+    
+    console.error("❌ Mail send failed:", error);
+    throw new Error(error); }
 }
 
 module.exports = SendMail;

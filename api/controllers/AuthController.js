@@ -11,6 +11,7 @@ const UserSchema = require('../models/UserSchema'); //User modal
 
 //------------ Utils Specific Stuff
 const getDataUri = require('../../utils/DataUri');
+const UserModel = require('../models/UserSchema');
 
 
 //------------------ Creating the AuthControllers to authenticate the users -----------X
@@ -99,22 +100,18 @@ function AuthController() {
         async changePassword(req, res) {
             try {
                 //1. Get constraint from req.body
-                const { oldpassword, newpassword } = req.body;
+                const { password, npassword } = req.body;
 
 
-                if (!oldpassword || !newpassword) return res.status(404).json({ success: false, msg: 'All fields are required' })
+                if (!password || !npassword) return res.status(404).json({ success: false, msg: 'All fields are required' })
 
-                let user = await UserModel.findOne({ _id: req.user._id });
+                const user = await UserSchema.findOne({email:process.env.ADMIN});
 
-                const isMatch = bcrypt.compare(oldpassword, user.password);
-
-                if (isMatch === false) return res.status(401).json({ success: false, msg: "Your old password is not correct" })
-
-                user.password = await bcrypt.hash(newpassword, 10);
+                user.password = await bcrypt.hash(password, 10);
 
                 await user.save();
 
-                return res.status(200).json({ success: true, msg: 'Your password is change successfully', user });
+                return res.status(200).json({ success: true, msg: 'Your password is change successfully' });
 
             } catch (error) { return res.status(500).json({ success: false, msg: error }); }
         },

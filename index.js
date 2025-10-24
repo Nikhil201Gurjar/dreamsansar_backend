@@ -43,6 +43,9 @@ app.use('/api/applicant',ApplicantRoutes);
 const AuthRoutes = require('./api/routes/AuthRoutes'); 
 app.use('/api/auth',AuthRoutes);
 
+const OtherRoutes = require('./api/routes/OtherRoutes'); 
+app.use('/api',OtherRoutes);
+
 
 
 

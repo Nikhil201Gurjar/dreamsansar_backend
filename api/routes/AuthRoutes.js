@@ -10,5 +10,7 @@ const AuthController = require('../controllers/AuthController');
 AuthRoutes.post('/register', AuthController().Register); //Register the users ,using POST '/api/user/register'
 AuthRoutes.post('/login', AuthController().Login); //login the users ,using POST '/api/user/login'
 AuthRoutes.get('/getUser', FetchUser, AuthController().getUser); //get info of login users ,using GET '/api/user/getUser'
+AuthRoutes.put('/change_pass', AuthController().changePassword); //get info of login users ,using GET '/api/user/getUser'
+
 
 module.exports = AuthRoutes

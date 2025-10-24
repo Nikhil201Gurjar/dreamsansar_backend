@@ -30,7 +30,7 @@ const ApplicantSchema = new mongoose.Schema(
     qualifications: {
       type: String,
       required: true,
-      minlength: [12, "Qualifications details must be 12 char long"],
+      minlength: [5, "Qualifications details must be 5 char long"],
       maxlength: [100, "Qualifications details mustn't 100 char long"],
     },
 
@@ -47,7 +47,7 @@ const ApplicantSchema = new mongoose.Schema(
         address1: {
       type: String,
       required: true,
-      minlength: [12, "Address details must be 12 char long"],
+      minlength: [7, "Address details must be 7 char long"],
       maxlength: [100, "Address details mustn't 100 char long"],
     },
         district:String,

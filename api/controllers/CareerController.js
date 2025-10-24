@@ -34,6 +34,8 @@ function CareerController() {
         const { role, role_details, number_of_posts, address, qualifications } =
           req.body;
 
+          console.log('reqbody',req.body,req.file);
+
         if (
           !role ||
           !role_details ||
@@ -67,7 +69,6 @@ function CareerController() {
             url: myCloud.secure_url,
           },
         });
-
         await res
           .status(201)
           .json({

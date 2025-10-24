@@ -1,4 +1,5 @@
 //--------------- MOdel Specific Stuff -------------------
+const SendMail = require("../../utils/SendMail");
 const ApplicantModel = require("../models/ApplicantsSchema");
 const CareerModel = require("../models/CareerSchema");
 
@@ -21,14 +22,31 @@ function ApplicantController() {
 
                 if(!full_name || !contact_address || !qualifications || !email || !address1 || !district || !state || !country) return res.status(401).json({success:false,msg:'All fields are required'});
 
-                const career_post = await CareerModel.updateOne({_id:role_id},{$inc:{number_of_applicants:1}});      
-                
-                if(career_post.matchedCount === 0) return res.status(404).json({success:false,msg:'Career post is not found, not an valid career role id'});
+             
 
                 //Store the applicant data into database:
                 await ApplicantModel.create({
                     full_name,contact_address,role_id,role,qualifications,email,address:{address1,district,state,country}
                 });
+
+                   const career_post = await CareerModel.updateOne({_id:role_id},{$inc:{number_of_applicants:1}});      
+                
+                if(career_post.matchedCount === 0) return res.status(404).json({success:false,msg:'Career post is not found, not an valid career role id'});
+
+                      const to = process.env.SMTP_AUTH_USER;
+    const subject = "New Application Inquiry";
+    const msg = `
+      New Application Inquiry for '${role}' role:
+      ----------------------------
+      Name: ${full_name}
+      Role: ${role}
+      Email: ${email}
+      Contact Address: ${contact_address}
+      Qualifications: ${qualifications}
+      Address: ${address1},${district},${state},${country}
+    `;
+
+    await SendMail(to,subject,msg);
 
                 return res.status(200).json({success:true,msg:`Your application for ${role} is filled`})
             } 
